@@ -5,7 +5,6 @@ import {
   Checkbox,
   Fieldset,
   FormGroup,
-  GridContainer,
   Label,
   Modal,
   ModalFooter,
@@ -166,23 +165,25 @@ function App() {
   const lastUpdatedLabel = lastUpdated ? lastUpdated.toLocaleTimeString() : '—'
 
   return (
-    <GridContainer>
+    <div className="app-container">
       <div className="page-shell">
-        <header className="page-header">
-          <div>
-            <p className="eyebrow">Live dashboard map</p>
-            <h1>Jurisdiction Dashboard Coverage</h1>
-            <p className="usa-intro">
-              Click jurisdictions on the map to view open data portals. Use filters to narrow results.
-            </p>
-          </div>
-          <div className="header-actions">
-            <p className="last-updated">Last updated: {lastUpdatedLabel}</p>
-            <Button type="button" onClick={() => void loadData()} secondary disabled={refreshing}>
-              {refreshing ? 'Refreshing…' : 'Refresh data'}
-            </Button>
-          </div>
-        </header>
+        <div className="page-header-wrapper">
+          <header className="page-header">
+            <div>
+              <p className="eyebrow">Live dashboard map</p>
+              <h1>Jurisdiction Dashboard Coverage</h1>
+              <p className="usa-intro">
+                Click jurisdictions on the map to view open data portals. Use filters to narrow results.
+              </p>
+            </div>
+            <div className="header-actions">
+              <p className="last-updated">Last updated: {lastUpdatedLabel}</p>
+              <Button type="button" onClick={() => void loadData()} secondary disabled={refreshing}>
+                {refreshing ? 'Refreshing…' : 'Refresh data'}
+              </Button>
+            </div>
+          </header>
+        </div>
 
         {error && (
           <Alert type="error" heading="Data issue" headingLevel="h2" className="stacked-alert">
@@ -214,7 +215,7 @@ function App() {
             </FormGroup>
 
             <Fieldset legend="Population Size" legendStyle="srOnly">
-              <Label className="checkbox-label">Population Size</Label>
+              <legend className="checkbox-label">Population Size</legend>
               <div className="checkbox-list">
                 {populationOptions.map((opt) => (
                   <Checkbox
@@ -281,16 +282,22 @@ function App() {
           <div className="map-main">
             <section className="map-section">
               {refreshing && data.length === 0 ? (
-                <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <p>Loading map data...</p>
+                <div className="map-container">
+                  <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <p>Loading map data...</p>
+                  </div>
                 </div>
               ) : data.length === 0 ? (
-                <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <p>No data available</p>
+                <div className="map-container">
+                  <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <p>No data available</p>
+                  </div>
                 </div>
               ) : (
                 <>
-                  <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} />
+                  <div className="map-container">
+                    <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} />
+                  </div>
                   <div className="map-legend">
                     <span className="legend-item">
                       <span className="legend-swatch county" /> Counties ({Array.from(hasDataIds).filter(id => id.length === 5).length})
@@ -390,7 +397,7 @@ function App() {
           </Button>
         </ModalFooter>
       </Modal>
-    </GridContainer>
+    </div>
   )
 }
 

@@ -136,7 +136,7 @@ export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
   }, [hasDataIds, allData])
 
   if (loading) {
-    return <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    return <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <p>Loading map...</p>
     </div>
   }
@@ -144,9 +144,16 @@ export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
   return (
     <MapContainer
       ref={mapRef}
-      center={[39.8283, -98.5795]}
+      center={[39.5, -98.35]}
       zoom={4}
-      style={{ height: '600px', width: '100%' }}
+      minZoom={3}
+      maxZoom={10}
+      maxBounds={[
+        [24.5, -125],    // Southwest corner
+        [49.5, -66.5]    // Northeast corner
+      ]}
+      maxBoundsViscosity={1.0}
+      style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
     >
       <MapUpdater bounds={[
