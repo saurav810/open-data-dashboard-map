@@ -15,59 +15,12 @@ import {
 import type { ModalRef } from '@trussworks/react-uswds'
 import './App.css'
 import { fetchDashboardData, type DashboardRecord } from './dataLoader'
-import { cityFeatures, countyFeatures, type SimpleFeature } from './sampleGeojson'
+import { USMap } from './Map'
 
 const CSV_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ_zWTMJ46aF_Nw3R5rw_Tq7PMpFnZ099zkFsXwSP1nge546f0PeisEOpBZ3gJQUdxHFrsOP8votEV/pub?output=csv'
 
-type GovernmentTypeFilter = '' | 'City' | 'County' | 'Unified City–County' | 'Other Public Agency'
-
-type LayerType = 'county' | 'city'
-
-interface FeatureWithLayer extends SimpleFeature {
-  properties: SimpleFeature['properties'] & { layer: LayerType }
-}
-
-function svgPoints(coordinates: [number, number][]): string {
-  return coordinates.map((pair) => pair.join(',')).join(' ')
-}
-
-function MapLayer({
-  features,
-  hasDataIds,
-  color,
-  onFeatureClick,
-}: {
-  features: FeatureWithLayer[]
-  hasDataIds: Set<string>
-  color: string
-  onFeatureClick: (feature: FeatureWithLayer) => void
-}) {
-  return (
-    <g>
-      {features.map((feature) => {
-        const id = feature.properties.GEOID
-        const hasData = hasDataIds.has(id)
-        return (
-          <polygon
-            key={id}
-            points={svgPoints(feature.geometry.coordinates)}
-            className="map-polygon"
-            data-layer={feature.properties.layer}
-            onClick={() => onFeatureClick(feature)}
-            style={{
-              fill: hasData ? color : '#e6e6e6',
-              stroke: hasData ? '#1b1b1b' : '#7d7d7d',
-              strokeWidth: hasData ? 2 : 1,
-            }}
-          >
-            <title>{feature.properties.name}</title>
-          </polygon>
-        )
-      })}
-    </g>
-  )
-}
+type GovernmentTypeFilter = '' | 'City' | 'County' | 'Other Public Agency'
 
 function App() {
   const [data, setData] = useState<DashboardRecord[]>([])
@@ -75,10 +28,19 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [refreshing, setRefreshing] = useState(false)
 
-  const [governmentTypeFilter, setGovernmentTypeFilter] = useState<GovernmentTypeFilter>('')
-  const [populationSizeFilter, setPopulationSizeFilter] = useState<Set<string>>(new Set())
+  // Pending filter selections (not yet applied)
+  const [pendingGovType, setPendingGovType] = useState<GovernmentTypeFilter>('')
+  const [pendingPopSizes, setPendingPopSizes] = useState<Set<string>>(new Set())
 
-  const [selectedFeature, setSelectedFeature] = useState<FeatureWithLayer | null>(null)
+  // Applied filters
+  const [appliedGovType, setAppliedGovType] = useState<GovernmentTypeFilter>('')
+  const [appliedPopSizes, setAppliedPopSizes] = useState<Set<string>>(new Set())
+
+  // Selected jurisdictions for the table
+  const [selectedJurisdictions, setSelectedJurisdictions] = useState<Set<string>>(new Set())
+
+  const [selectedGEOID, setSelectedGEOID] = useState<string | null>(null)
+  const [selectedName, setSelectedName] = useState<string>('')
   const [selectedFeatureRows, setSelectedFeatureRows] = useState<DashboardRecord[]>([])
 
   const modalRef = useRef<ModalRef>(null)
@@ -87,6 +49,8 @@ function App() {
     try {
       if (showSpinner) setRefreshing(true)
       const records = await fetchDashboardData(CSV_URL)
+      console.log('CSV data loaded:', records.length, 'records')
+      console.log('Sample records:', records.slice(0, 3))
       setData(records)
       setLastUpdated(new Date())
       setError(null)
@@ -105,9 +69,9 @@ function App() {
   }, [])
 
   const governmentOptions = useMemo(() => {
-    const base: GovernmentTypeFilter[] = ['City', 'County', 'Unified City–County']
+    const base: GovernmentTypeFilter[] = ['City', 'County']
     const hasOther = data.some(
-      (row) => !row.isUnified && !row.governmentTypes.includes('City') && !row.governmentTypes.includes('County')
+      (row) => !row.governmentTypes.includes('City') && !row.governmentTypes.includes('County')
     )
     return hasOther ? [...base, 'Other Public Agency'] : base
   }, [data])
@@ -122,56 +86,82 @@ function App() {
 
   const filteredRows = useMemo(() => {
     return data.filter((row) => {
-      if (governmentTypeFilter) {
-        if (governmentTypeFilter === 'City' && !row.governmentTypes.includes('City')) return false
-        if (governmentTypeFilter === 'County' && !row.governmentTypes.includes('County')) return false
-        if (governmentTypeFilter === 'Unified City–County' && !row.isUnified) return false
+      if (appliedGovType) {
+        if (appliedGovType === 'City' && !row.governmentTypes.includes('City')) return false
+        if (appliedGovType === 'County' && !row.governmentTypes.includes('County')) return false
         if (
-          governmentTypeFilter === 'Other Public Agency' &&
-          (row.isUnified || row.governmentTypes.includes('City') || row.governmentTypes.includes('County'))
+          appliedGovType === 'Other Public Agency' &&
+          (row.governmentTypes.includes('City') || row.governmentTypes.includes('County'))
         ) {
           return false
         }
       }
 
-      if (populationSizeFilter.size > 0 && !populationSizeFilter.has(row.populationSize)) return false
+      if (appliedPopSizes.size > 0 && !appliedPopSizes.has(row.populationSize)) return false
 
       return true
     })
-  }, [data, governmentTypeFilter, populationSizeFilter])
+  }, [data, appliedGovType, appliedPopSizes])
 
-  const hasDataIds = useMemo(() => new Set(filteredRows.map((row) => row.jurisdictionId)), [filteredRows])
+  const hasDataIds = useMemo(() => {
+    const ids = new Set(filteredRows.map((row) => row.jurisdictionId))
+    console.log('hasDataIds computed:', ids.size, 'IDs')
+    return ids
+  }, [filteredRows])
 
-  const allCounties: FeatureWithLayer[] = useMemo(
-    () => countyFeatures.map((feat) => ({ ...feat, properties: { ...feat.properties, layer: 'county' } })),
-    []
-  )
-  const allCities: FeatureWithLayer[] = useMemo(
-    () => cityFeatures.map((feat) => ({ ...feat, properties: { ...feat.properties, layer: 'city' } })),
-    []
-  )
+  const selectedJurisdictionsData = useMemo(() => {
+    return data.filter((row) => selectedJurisdictions.has(row.jurisdictionId))
+  }, [data, selectedJurisdictions])
 
-  const handleFeatureClick = (feature: FeatureWithLayer) => {
-    const featureId = feature.properties.GEOID
-    const matches = filteredRows.filter((row) => row.jurisdictionId === featureId)
-    setSelectedFeature(feature)
+  const handleFeatureClick = (geoid: string, name: string) => {
+    const matches = filteredRows.filter((row) => row.jurisdictionId === geoid)
+    
+    setSelectedGEOID(geoid)
+    setSelectedName(name)
     setSelectedFeatureRows(matches)
+    
+    // Add to selected jurisdictions
+    setSelectedJurisdictions((prev) => new Set(prev).add(geoid))
+    
     modalRef.current?.toggleModal(undefined, true)
   }
 
-  const resetFilters = () => {
-    setGovernmentTypeFilter('')
-    setPopulationSizeFilter(new Set())
+  const applyFilters = () => {
+    setAppliedGovType(pendingGovType)
+    setAppliedPopSizes(new Set(pendingPopSizes))
+  }
+
+  const clearFilters = () => {
+    setPendingGovType('')
+    setPendingPopSizes(new Set())
+    setAppliedGovType('')
+    setAppliedPopSizes(new Set())
+  }
+
+  const clearSelectedQueries = () => {
+    setSelectedJurisdictions(new Set())
+  }
+
+  const removeSelectedQuery = (geoid: string) => {
+    setSelectedJurisdictions((prev) => {
+      const next = new Set(prev)
+      next.delete(geoid)
+      return next
+    })
   }
 
   const togglePopulationFilter = (value: string) => {
-    setPopulationSizeFilter((current) => {
+    setPendingPopSizes((current) => {
       const next = new Set(current)
       if (next.has(value)) next.delete(value)
       else next.add(value)
       return next
     })
   }
+
+  const hasActiveFilters = appliedGovType !== '' || appliedPopSizes.size > 0
+  const hasPendingChanges = pendingGovType !== appliedGovType || 
+    JSON.stringify(Array.from(pendingPopSizes).sort()) !== JSON.stringify(Array.from(appliedPopSizes).sort())
 
   const lastUpdatedLabel = lastUpdated ? lastUpdated.toLocaleTimeString() : '—'
 
@@ -181,10 +171,9 @@ function App() {
         <header className="page-header">
           <div>
             <p className="eyebrow">Live dashboard map</p>
-            <h1>Jurisdiction dashboard coverage</h1>
+            <h1>Jurisdiction Dashboard Coverage</h1>
             <p className="usa-intro">
-              The map shows county and city dashboards sourced from the live Google Sheets CSV feed. Filters update both the map
-              and the results list.
+              Click jurisdictions on the map to view open data portals. Use filters to narrow results.
             </p>
           </div>
           <div className="header-actions">
@@ -201,21 +190,19 @@ function App() {
           </Alert>
         )}
 
-        <section className="filters" aria-label="Filters">
-          <div className="filters-header">
-            <h2>Filters</h2>
-            <Button type="button" unstyled onClick={resetFilters} className="reset-button">
-              Reset filters
-            </Button>
-          </div>
-          <div className="filters-grid">
+        <div className="map-layout">
+          <aside className="filters-sidebar" aria-label="Filters">
+            <div className="filters-header">
+              <h2>Filters</h2>
+            </div>
+            
             <FormGroup>
-              <Label htmlFor="gov-filter">Government type</Label>
+              <Label htmlFor="gov-filter">Government Type</Label>
               <select
                 id="gov-filter"
                 className="usa-select"
-                value={governmentTypeFilter}
-                onChange={(e) => setGovernmentTypeFilter(e.target.value as GovernmentTypeFilter)}
+                value={pendingGovType}
+                onChange={(e) => setPendingGovType(e.target.value as GovernmentTypeFilter)}
               >
                 <option value="">All</option>
                 {governmentOptions.map((opt) => (
@@ -226,11 +213,9 @@ function App() {
               </select>
             </FormGroup>
 
-            <Fieldset legend="Population size" legendStyle="srOnly">
-              <Label className="checkbox-label" htmlFor="population-options">
-                Population size
-              </Label>
-              <div className="checkbox-grid" id="population-options">
+            <Fieldset legend="Population Size" legendStyle="srOnly">
+              <Label className="checkbox-label">Population Size</Label>
+              <div className="checkbox-list">
                 {populationOptions.map((opt) => (
                   <Checkbox
                     key={opt}
@@ -238,83 +223,140 @@ function App() {
                     name="population-size"
                     value={opt}
                     label={opt}
-                    checked={populationSizeFilter.has(opt)}
+                    checked={pendingPopSizes.has(opt)}
                     onChange={() => togglePopulationFilter(opt)}
                   />
                 ))}
               </div>
             </Fieldset>
-          </div>
-        </section>
 
-        <section className="map-section">
-          <div className="map-header">
-            <h2>Map</h2>
-            <p className="map-subhead">Polygons are shaded when any filtered dashboards match their GEOID.</p>
-          </div>
-          <div className="map-frame">
-            <svg viewBox="0 0 700 550" role="img" aria-label="Jurisdiction coverage map">
-              <rect x="0" y="0" width="700" height="550" fill="#f5f5f5" />
-              <MapLayer features={allCounties} hasDataIds={hasDataIds} color="#b6d7a8" onFeatureClick={handleFeatureClick} />
-              <MapLayer features={allCities} hasDataIds={hasDataIds} color="#a4c2f4" onFeatureClick={handleFeatureClick} />
-            </svg>
-          </div>
-          <p className="map-legend">
-            <span className="legend-swatch county" /> Counties with dashboards
-            <span className="legend-swatch city" /> Cities with dashboards
-          </p>
-        </section>
-
-        <section className="results-section">
-          <div className="results-header">
-            <h2>Dashboards ({filteredRows.length})</h2>
-          </div>
-          {refreshing && data.length === 0 ? (
-            <div className="centered">
-              <p>Loading data…</p>
+            <div className="filter-actions">
+              <Button type="button" onClick={applyFilters} disabled={!hasPendingChanges}>
+                Apply Filters
+              </Button>
+              <Button type="button" onClick={clearFilters} secondary disabled={!hasActiveFilters && pendingPopSizes.size === 0 && !pendingGovType}>
+                Clear All
+              </Button>
             </div>
-          ) : filteredRows.length === 0 ? (
-            <Alert type="info" heading="No dashboards match the filters" headingLevel="h3">
-              Try adjusting government type or population filters.
-            </Alert>
-          ) : (
+
+            {hasActiveFilters && (
+              <div className="active-filters">
+                <h3>Active Filters</h3>
+                <ul className="filter-tags">
+                  {appliedGovType && (
+                    <li className="filter-tag">
+                      Government: {appliedGovType}
+                      <button
+                        onClick={() => {
+                          setPendingGovType('')
+                          setAppliedGovType('')
+                        }}
+                        aria-label={`Remove ${appliedGovType} filter`}
+                      >
+                        ×
+                      </button>
+                    </li>
+                  )}
+                  {Array.from(appliedPopSizes).map((size) => (
+                    <li key={size} className="filter-tag">
+                      {size}
+                      <button
+                        onClick={() => {
+                          const newSizes = new Set(appliedPopSizes)
+                          newSizes.delete(size)
+                          setAppliedPopSizes(newSizes)
+                          setPendingPopSizes(newSizes)
+                        }}
+                        aria-label={`Remove ${size} filter`}
+                      >
+                        ×
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </aside>
+
+          <div className="map-main">
+            <section className="map-section">
+              {refreshing && data.length === 0 ? (
+                <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <p>Loading map data...</p>
+                </div>
+              ) : data.length === 0 ? (
+                <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <p>No data available</p>
+                </div>
+              ) : (
+                <>
+                  <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} />
+                  <div className="map-legend">
+                    <span className="legend-item">
+                      <span className="legend-swatch county" /> Counties ({Array.from(hasDataIds).filter(id => id.length === 5).length})
+                    </span>
+                    <span className="legend-item">
+                      <span className="legend-swatch city" /> Cities ({Array.from(hasDataIds).filter(id => id.length === 7).length})
+                    </span>
+                  </div>
+                </>
+              )}
+            </section>
+          </div>
+        </div>
+
+        {selectedJurisdictions.size > 0 && (
+          <section className="selected-section">
+            <div className="selected-header">
+              <h2>Selected Jurisdictions ({selectedJurisdictions.size})</h2>
+              <Button type="button" unstyled onClick={clearSelectedQueries} className="clear-button">
+                Clear selections
+              </Button>
+            </div>
             <div className="table-wrapper">
               <Table bordered fullWidth>
                 <thead>
                   <tr>
                     <th scope="col">Jurisdiction</th>
-                    <th scope="col">Jurisdiction ID</th>
-                    <th scope="col">Government type</th>
-                    <th scope="col">Population size</th>
-                    <th scope="col">Notes</th>
+                    <th scope="col">Government Type</th>
+                    <th scope="col">Population Size</th>
                     <th scope="col">Dashboard</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredRows.map((row) => (
-                    <tr key={`${row.jurisdiction}-${row.jurisdictionId}-${row.url}`}>
+                  {selectedJurisdictionsData.map((row) => (
+                    <tr key={`${row.jurisdiction}-${row.jurisdictionId}`}>
                       <td>{row.jurisdiction}</td>
-                      <td className="mono">{row.jurisdictionId}</td>
                       <td>{row.displayGovernmentType}</td>
                       <td>{row.populationSize}</td>
-                      <td>{row.notes || '—'}</td>
                       <td>
                         <a href={row.url} target="_blank" rel="noreferrer">
-                          Open
+                          Open Portal
                         </a>
+                      </td>
+                      <td>
+                        <Button
+                          type="button"
+                          unstyled
+                          onClick={() => removeSelectedQuery(row.jurisdictionId)}
+                          className="remove-button"
+                        >
+                          Remove
+                        </Button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
             </div>
-          )}
-        </section>
+          </section>
+        )}
       </div>
 
       <Modal id="details-modal" ref={modalRef} aria-labelledby="details-heading" aria-describedby="details-body">
         <ModalHeading id="details-heading">
-          {selectedFeature ? selectedFeature.properties.name : 'Jurisdiction details'}
+          {selectedName || 'Jurisdiction details'}
         </ModalHeading>
         <div className="modal-body" id="details-body">
           {selectedFeatureRows.length === 0 ? (
@@ -324,13 +366,17 @@ function App() {
               {selectedFeatureRows.map((row) => (
                 <li key={`${row.jurisdiction}-${row.url}`} className="detail-card">
                   <p className="detail-title">{row.jurisdiction}</p>
-                  <p className="detail-meta">ID: {row.jurisdictionId}</p>
-                  <p className="detail-meta">Government type: {row.displayGovernmentType}</p>
-                  <p className="detail-meta">Population size: {row.populationSize}</p>
-                  {row.notes && <p className="detail-notes">{row.notes}</p>}
+                  <p className="detail-meta">Government Type: {row.displayGovernmentType}</p>
+                  <p className="detail-meta">Population Size: {row.populationSize}</p>
+                  {row.notes && (
+                    <div className="detail-notes-section">
+                      <p className="detail-notes-label">Notes:</p>
+                      <p className="detail-notes">{row.notes}</p>
+                    </div>
+                  )}
                   <p>
-                    <a href={row.url} target="_blank" rel="noreferrer">
-                      Open dashboard
+                    <a href={row.url} target="_blank" rel="noreferrer" className="portal-link">
+                      Open Data Portal →
                     </a>
                   </p>
                 </li>
