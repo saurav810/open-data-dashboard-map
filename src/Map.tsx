@@ -1,29 +1,65 @@
 import { useEffect, useRef, useState } from 'react'
-import { MapContainer, TileLayer, GeoJSON, CircleMarker, Popup, Tooltip } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, CircleMarker, Tooltip, useMap } from 'react-leaflet'
 import type { Map as LeafletMap } from 'leaflet'
 import type { FeatureCollection, Feature } from 'geojson'
 import 'leaflet/dist/leaflet.css'
 import type { DashboardRecord } from './dataLoader'
 
+export type Region = 'lower48' | 'alaska' | 'hawaii'
+
+interface RegionConfig {
+  center: [number, number]
+  zoom: number
+  maxBounds: [[number, number], [number, number]]
+}
+
+const REGION_PRESETS: Record<Region, RegionConfig> = {
+  lower48: {
+    center: [39.5, -98.35],
+    zoom: 4,
+    maxBounds: [
+      [24.5, -125],    // Southwest
+      [49.5, -66.5]    // Northeast
+    ]
+  },
+  alaska: {
+    center: [64.2, -152.0],
+    zoom: 4,
+    maxBounds: [
+      [51.0, -180],    // Southwest
+      [71.5, -130]     // Northeast
+    ]
+  },
+  hawaii: {
+    center: [20.8, -157.5],
+    zoom: 6,
+    maxBounds: [
+      [18.5, -161],    // Southwest
+      [22.5, -154]     // Northeast
+    ]
+  }
+}
+
 interface USMapProps {
   hasDataIds: Set<string>
   onFeatureClick: (geoid: string, name: string) => void
   allData: DashboardRecord[]
+  activeRegion?: Region
 }
 
-function MapUpdater({ bounds }: { bounds: [[number, number], [number, number]] }) {
-  const map = useRef<LeafletMap | null>(null)
+function MapViewController({ activeRegion }: { activeRegion: Region }) {
+  const map = useMap()
   
   useEffect(() => {
-    if (map.current) {
-      map.current.fitBounds(bounds)
-    }
-  }, [bounds])
+    const config = REGION_PRESETS[activeRegion]
+    map.setView(config.center, config.zoom, { animate: true })
+    map.setMaxBounds(config.maxBounds)
+  }, [activeRegion, map])
 
   return null
 }
 
-export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
+export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'lower48' }: USMapProps) {
   const [countiesData, setCountiesData] = useState<FeatureCollection | null>(null)
   const [citiesData, setCitiesData] = useState<Array<Feature<any>>>([])
   const [loading, setLoading] = useState(true)
@@ -33,6 +69,13 @@ export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
     const loadGeoData = async () => {
       try {
         setLoading(true)
+        
+        console.log('🗺️ Map received hasDataIds:', hasDataIds.size, 'IDs')
+        console.log('Sample IDs from dataset:', Array.from(hasDataIds).slice(0, 10))
+        
+        // Check for Denver specifically
+        const denverIds = Array.from(hasDataIds).filter(id => id.includes('082'))
+        console.log('Denver-related IDs in dataset:', denverIds)
         
         // Load county GeoJSON
         const response = await fetch(
@@ -56,6 +99,17 @@ export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
           const paddedId = String(numericId).padStart(5, '0')
           const matchedId = idMatchMap.get(paddedId)
           
+          // Debug Denver County specifically
+          if (paddedId.startsWith('082')) {
+            console.log('Denver County GeoJSON feature:', {
+              id: numericId,
+              paddedId,
+              name: feature.properties?.name,
+              hasMatch: hasDataIds.has(matchedId || '')
+            })
+          }
+          
+          // Check for direct 5-digit county match
           if (matchedId && hasDataIds.has(matchedId)) {
             if (!feature.properties) feature.properties = {}
             feature.properties.CSV_ID = matchedId
@@ -63,6 +117,18 @@ export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
             countyMatches++
             return true
           }
+          
+          // Also check if this county has a unified city-county with a 7-digit ID
+          // For example, Denver County (08020) should match Denver city (0820000)
+          const cityStyleId = paddedId + '00' // Convert 5-digit county to 7-digit city format
+          if (hasDataIds.has(cityStyleId)) {
+            if (!feature.properties) feature.properties = {}
+            feature.properties.CSV_ID = cityStyleId
+            console.log('Unified city-county match:', paddedId, '->', cityStyleId, feature.properties.name)
+            countyMatches++
+            return true
+          }
+          
           return false
         })
         
@@ -141,25 +207,21 @@ export function USMap({ hasDataIds, onFeatureClick, allData }: USMapProps) {
     </div>
   }
 
+  const initialConfig = REGION_PRESETS[activeRegion]
+
   return (
     <MapContainer
       ref={mapRef}
-      center={[39.5, -98.35]}
-      zoom={4}
+      center={initialConfig.center}
+      zoom={initialConfig.zoom}
       minZoom={3}
       maxZoom={10}
-      maxBounds={[
-        [24.5, -125],    // Southwest corner
-        [49.5, -66.5]    // Northeast corner
-      ]}
+      maxBounds={initialConfig.maxBounds}
       maxBoundsViscosity={1.0}
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
     >
-      <MapUpdater bounds={[
-        [24.396308, -125.0],  // Southwest (includes Hawaii)
-        [49.384358, -66.93457] // Northeast
-      ]} />
+      <MapViewController activeRegion={activeRegion} />
       
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

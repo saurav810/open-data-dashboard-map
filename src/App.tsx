@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
-  Alert,
   Button,
   Checkbox,
   Fieldset,
@@ -13,19 +12,17 @@ import {
 } from '@trussworks/react-uswds'
 import type { ModalRef } from '@trussworks/react-uswds'
 import './App.css'
-import { fetchDashboardData, type DashboardRecord } from './dataLoader'
-import { USMap } from './Map'
-
-const CSV_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ_zWTMJ46aF_Nw3R5rw_Tq7PMpFnZ099zkFsXwSP1nge546f0PeisEOpBZ3gJQUdxHFrsOP8votEV/pub?output=csv'
+import { loadDashboardData, getSnapshotMeta, type DashboardRecord } from './dataLoader'
+import { USMap, type Region } from './Map'
 
 type GovernmentTypeFilter = '' | 'City' | 'County' | 'Other Public Agency'
 
 function App() {
-  const [data, setData] = useState<DashboardRecord[]>([])
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [refreshing, setRefreshing] = useState(false)
+  const data = useMemo(() => loadDashboardData(), [])
+  const snapshotMeta = useMemo(() => getSnapshotMeta(), [])
+
+  // Region navigation
+  const [activeRegion, setActiveRegion] = useState<Region>('lower48')
 
   // Pending filter selections (not yet applied)
   const [pendingGovType, setPendingGovType] = useState<GovernmentTypeFilter>('')
@@ -38,34 +35,10 @@ function App() {
   // Selected jurisdictions for the table
   const [selectedJurisdictions, setSelectedJurisdictions] = useState<Set<string>>(new Set())
 
-  const [selectedGEOID, setSelectedGEOID] = useState<string | null>(null)
   const [selectedName, setSelectedName] = useState<string>('')
   const [selectedFeatureRows, setSelectedFeatureRows] = useState<DashboardRecord[]>([])
 
   const modalRef = useRef<ModalRef>(null)
-
-  const loadData = async (showSpinner = true) => {
-    try {
-      if (showSpinner) setRefreshing(true)
-      const records = await fetchDashboardData(CSV_URL)
-      console.log('CSV data loaded:', records.length, 'records')
-      console.log('Sample records:', records.slice(0, 3))
-      setData(records)
-      setLastUpdated(new Date())
-      setError(null)
-    } catch (err) {
-      console.error('Failed to fetch CSV', err)
-      setError('Unable to load live dashboard data. Showing the last successful load if available.')
-    } finally {
-      if (showSpinner) setRefreshing(false)
-    }
-  }
-
-  useEffect(() => {
-    void loadData()
-    const interval = setInterval(() => void loadData(false), 60_000)
-    return () => clearInterval(interval)
-  }, [])
 
   const governmentOptions = useMemo(() => {
     const base: GovernmentTypeFilter[] = ['City', 'County']
@@ -115,7 +88,6 @@ function App() {
   const handleFeatureClick = (geoid: string, name: string) => {
     const matches = filteredRows.filter((row) => row.jurisdictionId === geoid)
     
-    setSelectedGEOID(geoid)
     setSelectedName(name)
     setSelectedFeatureRows(matches)
     
@@ -162,7 +134,14 @@ function App() {
   const hasPendingChanges = pendingGovType !== appliedGovType || 
     JSON.stringify(Array.from(pendingPopSizes).sort()) !== JSON.stringify(Array.from(appliedPopSizes).sort())
 
-  const lastUpdatedLabel = lastUpdated ? lastUpdated.toLocaleTimeString() : '—'
+  const lastUpdatedLabel = useMemo(() => {
+    try {
+      const date = new Date(snapshotMeta.generatedAt)
+      return date.toLocaleString()
+    } catch {
+      return '—'
+    }
+  }, [snapshotMeta])
 
   return (
     <div className="app-container">
@@ -178,18 +157,9 @@ function App() {
             </div>
             <div className="header-actions">
               <p className="last-updated">Last updated: {lastUpdatedLabel}</p>
-              <Button type="button" onClick={() => void loadData()} secondary disabled={refreshing}>
-                {refreshing ? 'Refreshing…' : 'Refresh data'}
-              </Button>
             </div>
           </header>
         </div>
-
-        {error && (
-          <Alert type="error" heading="Data issue" headingLevel="h2" className="stacked-alert">
-            {error}
-          </Alert>
-        )}
 
         <div className="map-layout">
           <aside className="filters-sidebar" aria-label="Filters">
@@ -280,14 +250,34 @@ function App() {
           </aside>
 
           <div className="map-main">
+            <div className="quick-zoom-controls">
+              <span className="quick-zoom-label">Quick zoom:</span>
+              <div className="quick-zoom-buttons" role="group" aria-label="Map region navigation">
+                <Button
+                  type="button"
+                  onClick={() => setActiveRegion('lower48')}
+                  outline={activeRegion !== 'lower48'}
+                >
+                  Lower 48
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setActiveRegion('alaska')}
+                  outline={activeRegion !== 'alaska'}
+                >
+                  Alaska
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setActiveRegion('hawaii')}
+                  outline={activeRegion !== 'hawaii'}
+                >
+                  Hawaii
+                </Button>
+              </div>
+            </div>
             <section className="map-section">
-              {refreshing && data.length === 0 ? (
-                <div className="map-container">
-                  <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <p>Loading map data...</p>
-                  </div>
-                </div>
-              ) : data.length === 0 ? (
+              {data.length === 0 ? (
                 <div className="map-container">
                   <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <p>No data available</p>
@@ -296,7 +286,7 @@ function App() {
               ) : (
                 <>
                   <div className="map-container">
-                    <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} />
+                    <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} activeRegion={activeRegion} />
                   </div>
                   <div className="map-legend">
                     <span className="legend-item">

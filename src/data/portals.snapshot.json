@@ -1,0 +1,1226 @@
+[
+  {
+    "Jurisdiction": "Adams County, CO",
+    "Jurisdiction ID": "08001",
+    "URL": "https://data-adcogov.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Akron, OH",
+    "Jurisdiction ID": "3901000",
+    "URL": "https://data-akron.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City, County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Alameda County, CA",
+    "Jurisdiction ID": "06001",
+    "URL": "https://data.acgov.org/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Albuquerque, NM",
+    "Jurisdiction ID": "3502000",
+    "URL": "https://www.cabq.gov/abq-data",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Alexandria, VA",
+    "Jurisdiction ID": "5101000",
+    "URL": "https://cityofalexandria-alexgis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Anchorage, AK",
+    "Jurisdiction ID": "0203000",
+    "URL": "https://moa-muniorg.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Arlington, TX",
+    "Jurisdiction ID": "4804000",
+    "URL": "https://opendata.arlingtontx.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Athens-Clarke County, GA",
+    "Jurisdiction ID": "1303440",
+    "URL": "https://data-athensclarke.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City, County",
+    "Notes": "Unified City-County Government "
+  },
+  {
+    "Jurisdiction": "Atlanta, GA",
+    "Jurisdiction ID": "1304000",
+    "URL": "https://dpcd-coaplangis.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Austin, TX",
+    "Jurisdiction ID": "4805000",
+    "URL": "https://data.austintexas.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Baltimore County, MD",
+    "Jurisdiction ID": "2404000",
+    "URL": "https://www.baltimorecountymd.gov/open-data",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Baltimore, MD",
+    "Jurisdiction ID": "0024005",
+    "URL": "https://data.baltimorecity.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Baton Rouge, LA",
+    "Jurisdiction ID": "2205000",
+    "URL": "https://data.brla.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Bellevue, WA",
+    "Jurisdiction ID": "5305210",
+    "URL": "https://data.bellevuewa.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Beverly Hills, CA",
+    "Jurisdiction ID": "0606308",
+    "URL": "https://opendata-hub.beverlyhills.org/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Boise, ID",
+    "Jurisdiction ID": "1608830",
+    "URL": "https://opendata.cityofboise.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Boston, MA",
+    "Jurisdiction ID": "2507000",
+    "URL": "https://data.boston.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Boulder County, CO",
+    "Jurisdiction ID": "08013",
+    "URL": "https://opendata-bouldercounty.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Boulder, CO",
+    "Jurisdiction ID": "0807850",
+    "URL": "https://open-data.bouldercolorado.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Buffalo, NY",
+    "Jurisdiction ID": "3611000",
+    "URL": "https://data.buffalony.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Buncombe County, NC",
+    "Jurisdiction ID": "37021",
+    "URL": "https://data.buncombecounty.org/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Burlington, VT",
+    "Jurisdiction ID": "5010675",
+    "URL": "https://data.burlingtonvt.gov/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Cambridge, MA",
+    "Jurisdiction ID": "2511000",
+    "URL": "https://www.cambridgema.gov/departments/opendata",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Carlsbad, CA",
+    "Jurisdiction ID": "0611194",
+    "URL": "https://open-data-carlsbad.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Charleston, SC",
+    "Jurisdiction ID": "4513330",
+    "URL": "https://data-charleston-sc.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Charlotte, NC",
+    "Jurisdiction ID": "3712000",
+    "URL": "https://data.charlottenc.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Charlottesville, VA",
+    "Jurisdiction ID": "5114968",
+    "URL": "https://opendata.charlottesville.gov/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Chattanooga, TN",
+    "Jurisdiction ID": "4714000",
+    "URL": "https://data.chattanooga.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Chicago, IL",
+    "Jurisdiction ID": "1714000",
+    "URL": "https://data.cityofchicago.org/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Cincinnati, OH",
+    "Jurisdiction ID": "3915000",
+    "URL": "https://data.cincinnati-oh.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Clark County, WA",
+    "Jurisdiction ID": "53011",
+    "URL": "https://hub-clarkcountywa.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Columbia, MO",
+    "Jurisdiction ID": "2915670",
+    "URL": "https://opendata-gocolumbiamo.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Columbus, OH",
+    "Jurisdiction ID": "3918000",
+    "URL": "https://data.columbus.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Dallas County, TX",
+    "Jurisdiction ID": "48113",
+    "URL": "https://dallas-county-open-data-hub-dallascountygis.hub.arcgis.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Dallas, TX",
+    "Jurisdiction ID": "4819000",
+    "URL": "https://www.dallasopendata.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Denver, CO",
+    "Jurisdiction ID": "0820000",
+    "URL": "https://www.denvergov.org/opendata/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City, County",
+    "Notes": "Unified City-County Government with Denver County, CO"
+  },
+  {
+    "Jurisdiction": "Detroit, MI",
+    "Jurisdiction ID": "2622000",
+    "URL": "https://data.detroitmi.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Douglas County, KS",
+    "Jurisdiction ID": "20045",
+    "URL": "https://gis.dgcoks.gov/portal/apps/experiencebuilder/experience/?id=082d52b6a1ae4f0c87ecdf2d18bd2b3f",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Dubuque, IA",
+    "Jurisdiction ID": "1922395",
+    "URL": "https://dubuque.data.socrata.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Durham, NC",
+    "Jurisdiction ID": "3719000",
+    "URL": "https://live-durhamnc.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Elk Grove, CA",
+    "Jurisdiction ID": "0622020",
+    "URL": "https://gisdata.elkgrove.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "El Paso, TX",
+    "Jurisdiction ID": "4824000",
+    "URL": "https://city-of-el-paso-open-data-coepgis.hub.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Evanston, IL",
+    "Jurisdiction ID": "1724582",
+    "URL": "https://data.cityofevanston.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fairfax County, VA",
+    "Jurisdiction ID": "51059",
+    "URL": "https://data-fairfaxcountygis.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fairfield, CA",
+    "Jurisdiction ID": "0623182",
+    "URL": "https://city-of-fairfield-gis-cityoffairfieldca.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fort Collins, CO",
+    "Jurisdiction ID": "0827425",
+    "URL": "https://opendata.fcgov.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fort Lauderdale, FL",
+    "Jurisdiction ID": "1224000",
+    "URL": "https://ftlgeo-fortlauderdale.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fort Worth, TX",
+    "Jurisdiction ID": "4827000",
+    "URL": "https://data.fortworthtexas.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Frederick County, MD",
+    "Jurisdiction ID": "24021",
+    "URL": "https://gis-fcgmd.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fresno, CA",
+    "Jurisdiction ID": "0627000",
+    "URL": "https://city-of-fresno-gis-hub-cityoffresno.hub.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Fulton County, GA",
+    "Jurisdiction ID": "13121",
+    "URL": "https://data.fultoncountyga.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Gilbert, AZ",
+    "Jurisdiction ID": "0427400",
+    "URL": "https://data.gilbertaz.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Glendale, AZ",
+    "Jurisdiction ID": "0427820",
+    "URL": "https://glendaleaz-cog-gis.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Greeley, CO",
+    "Jurisdiction ID": "0832155",
+    "URL": "https://open-data-greeley.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Hannepin County, MN",
+    "Jurisdiction ID": "27053",
+    "URL": "https://gis-hennepin.hub.arcgis.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Harris County, TX",
+    "Jurisdiction ID": "48201",
+    "URL": "https://geo-harriscounty.opendata.arcgis.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Henderson, NV",
+    "Jurisdiction ID": "3231900",
+    "URL": "https://opendata.cityofhenderson.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Honolulu, HI",
+    "Jurisdiction ID": "1571550",
+    "URL": "https://data.honolulu.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City, County",
+    "Notes": "Unified City-County Government with Honolulu County, HI"
+  },
+  {
+    "Jurisdiction": "Houston, TX",
+    "Jurisdiction ID": "4835000",
+    "URL": "https://houston-mycity.opendata.arcgis.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Irving, TX",
+    "Jurisdiction ID": "4837000",
+    "URL": "https://data-cityofirving.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Issaquah, WA",
+    "Jurisdiction ID": "5333805",
+    "URL": "https://open-data-issaquahwa.hub.arcgis.com/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Jacksonville, FL",
+    "Jurisdiction ID": "1235000",
+    "URL": "https://data.coj.net/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Jersey City, NJ",
+    "Jurisdiction ID": "3436000",
+    "URL": "https://data.jerseycitynj.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Johnson County, KS",
+    "Jurisdiction ID": "20091",
+    "URL": "https://jocogov-aims.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Kansas City, MO",
+    "Jurisdiction ID": "2938000",
+    "URL": "https://data.kcmo.org/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City, County",
+    "Notes": "Unified City-County Government with Wyndotte County, MO"
+  },
+  {
+    "Jurisdiction": "King County, WA",
+    "Jurisdiction ID": "53033",
+    "URL": "https://data.kingcounty.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Lane County, OR",
+    "Jurisdiction ID": "41039",
+    "URL": "https://data-lanecounty.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Las Vegas, NV",
+    "Jurisdiction ID": "3240000",
+    "URL": "https://opendataportal-lasvegas.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Lawrence, KS",
+    "Jurisdiction ID": "2038900",
+    "URL": "https://lawrenceks.maps.arcgis.com/home/index.html",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Little Rock, AR",
+    "Jurisdiction ID": "0541000",
+    "URL": "https://data.littlerock.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Long Beach, CA",
+    "Jurisdiction ID": "0643000",
+    "URL": "https://data.longbeach.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Longmont, CO",
+    "Jurisdiction ID": "0845970",
+    "URL": "https://data-longmontco.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Los Angeles County, CA",
+    "Jurisdiction ID": "06037",
+    "URL": "https://data.lacounty.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Los Angeles, CA",
+    "Jurisdiction ID": "0644000",
+    "URL": "https://data.lacity.org/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Loudoun County, VA",
+    "Jurisdiction ID": "51107",
+    "URL": "https://geohub-loudoungis.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Madera County, CA",
+    "Jurisdiction ID": "06039",
+    "URL": "https://madera-county-open-data-maderacounty.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Madison, WI",
+    "Jurisdiction ID": "5548000",
+    "URL": "https://data-cityofmadison.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Marin County, CA",
+    "Jurisdiction ID": "06041",
+    "URL": "https://opendata-marincountygis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Maui County, HI",
+    "Jurisdiction ID": "15009",
+    "URL": "https://mauicounty.maps.arcgis.com/home/index.html",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Mecklenburg County, NC",
+    "Jurisdiction ID": "37119",
+    "URL": "https://gis.mecklenburgcountync.gov/opendata-viewer",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Memphis, TN",
+    "Jurisdiction ID": "4748000",
+    "URL": "https://memphis-open-data-hub-memegis.hub.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Mendocino County, CA",
+    "Jurisdiction ID": "06045",
+    "URL": "https://gis.mendocinocounty.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Merced County, CA",
+    "Jurisdiction ID": "06047",
+    "URL": "https://geostack-mercedcounty.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Mesa, Arizona",
+    "Jurisdiction ID": "0446000",
+    "URL": "https://data.mesaaz.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Miami, FL",
+    "Jurisdiction ID": "1245000",
+    "URL": "https://datahub-miamigis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Milpitas, CA",
+    "Jurisdiction ID": "0647766",
+    "URL": "https://milpitas-open-data-cityofmilpitas.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Milwaukee County, WI",
+    "Jurisdiction ID": "55079",
+    "URL": "https://data.county.milwaukee.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Milwaukee, WI",
+    "Jurisdiction ID": "5553000",
+    "URL": "https://data.milwaukee.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Minneapolis, MN",
+    "Jurisdiction ID": "2743000",
+    "URL": "https://opendata.minneapolismn.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Mono County, CA",
+    "Jurisdiction ID": "06051",
+    "URL": "https://gis-monomammoth.opendata.arcgis.com/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Montgomery County, MD",
+    "Jurisdiction ID": "24031",
+    "URL": "https://data.montgomerycountymd.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Montgomery County, PA",
+    "Jurisdiction ID": "42091",
+    "URL": "https://data-montcopa.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Napa County, CA",
+    "Jurisdiction ID": "06055",
+    "URL": "https://gisdata.countyofnapa.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Nashville, TN",
+    "Jurisdiction ID": "4752006",
+    "URL": "https://data.nashville.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City, County",
+    "Notes": "Unified City-County Government with Davidson County"
+  },
+  {
+    "Jurisdiction": "New Orleans, LA",
+    "Jurisdiction ID": "2255000",
+    "URL": "https://portal-nolagis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "New York, NY",
+    "Jurisdiction ID": "3651000",
+    "URL": "https://data.cityofnewyork.us/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Newark, NJ",
+    "Jurisdiction ID": "3451000",
+    "URL": "https://data-newgin.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Norfolk, VA",
+    "Jurisdiction ID": "5157000",
+    "URL": "https://data.norfolk.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Oakland, CA",
+    "Jurisdiction ID": "0653000",
+    "URL": "https://data.oaklandca.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Oklahoma City, OK",
+    "Jurisdiction ID": "4055000",
+    "URL": "https://data.okc.gov/portal/page/start/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Oklahoma County, OK",
+    "Jurisdiction ID": "40109",
+    "URL": "https://ok-county-gis-hub-ok-co.hub.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Omaha, NE",
+    "Jurisdiction ID": "3137000",
+    "URL": "https://data-dogis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Orange County, CA",
+    "Jurisdiction ID": "06059",
+    "URL": "https://data-ocpw.opendata.arcgis.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Palo Alto, CA",
+    "Jurisdiction ID": "0655282",
+    "URL": "https://data.cityofpaloalto.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Philadelphia, PA",
+    "Jurisdiction ID": "4260000",
+    "URL": "https://www.opendataphilly.org/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Phoenix, AZ",
+    "Jurisdiction ID": "0455000",
+    "URL": "https://www.phoenixopendata.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Pierce County, WA",
+    "Jurisdiction ID": "53053",
+    "URL": "https://gisdata-piercecowa.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Pittsburgh, PA",
+    "Jurisdiction ID": "4261000",
+    "URL": "https://data.wprdc.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Plumas County, CA",
+    "Jurisdiction ID": "06063",
+    "URL": "https://www.plumascounty.us/2192/GIS-Maps-and-Data",
+    "Population Size": "Population under 50,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Portland, ME",
+    "Jurisdiction ID": "2360545",
+    "URL": "https://data-hub-gpcog.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": "This links to data from the Greater Portland Council of Government Open Data Portal"
+  },
+  {
+    "Jurisdiction": "Portland, OR",
+    "Jurisdiction ID": "4159000",
+    "URL": "https://gis-pdx.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Riverside County, CA",
+    "Jurisdiction ID": "06065",
+    "URL": "https://data.countyofriverside.us/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Riverside, CA",
+    "Jurisdiction ID": "0662000",
+    "URL": "https://riversideca-gis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Rochester, NY",
+    "Jurisdiction ID": "3663000",
+    "URL": "https://data.cityofrochester.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Sacramento, CA",
+    "Jurisdiction ID": "0664000",
+    "URL": "https://data.cityofsacramento.org/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Sacramento County, CA",
+    "Jurisdiction ID": "06067",
+    "URL": "https://data-sacramentocounty.opendata.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Salem, MA",
+    "Jurisdiction ID": "2559105",
+    "URL": "https://exploring-salem-open-data-portal-salemma.hub.arcgis.com/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Salt Lake County, UT",
+    "Jurisdiction ID": "49035",
+    "URL": "https://gisdata-slco.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "San Bernardino County, CA",
+    "Jurisdiction ID": "06071",
+    "URL": "https://open.sbcounty.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "San Diego County, CA",
+    "Jurisdiction ID": "06073",
+    "URL": "https://geo.sandag.org/portal/apps/experiencebuilder/experience/?id=fad9e9c038c84f799b5378e4cc3ed068",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": "Links to San Diego Regional Data Warehouse which houses data from across government entities in the region"
+  },
+  {
+    "Jurisdiction": "San Francisco, CA",
+    "Jurisdiction ID": "0667000",
+    "URL": "https://data.sfgov.org/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City, County",
+    "Notes": "Unified City-County Government with San Fransicso County, CA"
+  },
+  {
+    "Jurisdiction": "San Jose, CA",
+    "Jurisdiction ID": "0668000",
+    "URL": "https://data.sanjoseca.gov/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "San Luis Obispo County, CA",
+    "Jurisdiction ID": "06079",
+    "URL": "https://opendata-slocounty.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "San Luis Obispo, CA",
+    "Jurisdiction ID": "0668154",
+    "URL": "https://gis-slocity.hub.arcgis.com/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "San Rafael, CA",
+    "Jurisdiction ID": "0668364",
+    "URL": "https://open-data-portal-san-rafael.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Santa Barbara County, CA",
+    "Jurisdiction ID": "06083",
+    "URL": "https://open-data-cosb-ent.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Santa Clara County, CA",
+    "Jurisdiction ID": "06085",
+    "URL": "https://data.sccgov.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Santa Fe County, NM",
+    "Jurisdiction ID": "35049",
+    "URL": "https://santa-fe-county-open-data-santafecountynm.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Santa Rosa, CA",
+    "Jurisdiction ID": "0670098",
+    "URL": "https://data.srcity.org/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Savannah, GA",
+    "Jurisdiction ID": "1369000",
+    "URL": "https://data-sagis.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Scottsdale, AZ",
+    "Jurisdiction ID": "0465000",
+    "URL": "https://data.scottsdaleaz.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Scranton, PA",
+    "Jurisdiction ID": "4269000",
+    "URL": "https://scranton-open-data-scrantonplanning.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Seattle, WA",
+    "Jurisdiction ID": "5363000",
+    "URL": "https://data.seattle.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Solano County, CA",
+    "Jurisdiction ID": "06095",
+    "URL": "https://regis.solanocounty.com/apps/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Somerville, MA",
+    "Jurisdiction ID": "2562535",
+    "URL": "https://data.somervillema.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Sonoma County, CA",
+    "Jurisdiction ID": "06097",
+    "URL": "https://sonoma-county-gis-hub-sonomacounty.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "South Bend, IN",
+    "Jurisdiction ID": "1871000",
+    "URL": "https://data-southbend.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "St. Paul, MN",
+    "Jurisdiction ID": "2758000",
+    "URL": "https://information.stpaul.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Sugar Land, TX",
+    "Jurisdiction ID": "4870808",
+    "URL": "https://data.sugarlandtx.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Sunnyvale, CA",
+    "Jurisdiction ID": "0677000",
+    "URL": "https://data-sunnyvale.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Syracuse, NY",
+    "Jurisdiction ID": "3673000",
+    "URL": "https://data.syr.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Tempe, AZ",
+    "Jurisdiction ID": "0473000",
+    "URL": "https://data.tempe.gov/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Topeka, KS",
+    "Jurisdiction ID": "2071000",
+    "URL": "https://performance.topeka.org/pages/open-data",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Normal, IL",
+    "Jurisdiction ID": "1753234",
+    "URL": "https://town-of-normal-open-data-tongis.hub.arcgis.com/",
+    "Population Size": "Population under 50,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Travis County, TX",
+    "Jurisdiction ID": "48453",
+    "URL": "https://tnr-traviscountytx.hub.arcgis.com/",
+    "Population Size": "Population exceeding 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Tucson, AZ",
+    "Jurisdiction ID": "0477000",
+    "URL": "https://gisdata.tucsonaz.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Tulare County, CA",
+    "Jurisdiction ID": "06107",
+    "URL": "https://gis-tularecounty.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Tulsa, OK",
+    "Jurisdiction ID": "4075000",
+    "URL": "https://gis2-cityoftulsa.opendata.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Ventura County, CA",
+    "Jurisdiction ID": "06111",
+    "URL": "https://venturacountydatadownloads-vcitsgis.hub.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Washington County, OR",
+    "Jurisdiction ID": "41067",
+    "URL": "https://washcoopendata-washco.hub.arcgis.com/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Washington, DC",
+    "Jurisdiction ID": "1150000",
+    "URL": "https://opendata.dc.gov/",
+    "Population Size": "Population between 500,000 and 1 million",
+    "Government Type": "City",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Wicomico County, MD",
+    "Jurisdiction ID": "24045",
+    "URL": "https://salisbury-gis-open-data-hub-salisbury.hub.arcgis.com/",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  },
+  {
+    "Jurisdiction": "Winnebago County, WI",
+    "Jurisdiction ID": "55139",
+    "URL": "https://www.winnebagocountywi.gov/407/Data-Download",
+    "Population Size": "Population between 50,000 and 500,000",
+    "Government Type": "County",
+    "Notes": ""
+  }
+]

@@ -168,6 +168,35 @@
   width: 100%;
 }
 
+.quick-zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f0f0f0;
+  border: 1px solid var(--subtle-border);
+  border-radius: 0.25rem;
+}
+
+.quick-zoom-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted-ink);
+}
+
+.quick-zoom-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.quick-zoom-buttons .usa-button {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
 .checkbox-label {
   font-weight: 600;
   margin-bottom: 0.5rem;
