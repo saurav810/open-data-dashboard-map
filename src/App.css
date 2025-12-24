@@ -11,6 +11,7 @@
 .app-container {
   width: 100%;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling in iframes */
 }
 
 .page-header-wrapper {
@@ -21,6 +22,7 @@
 
 #root {
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling in iframes */
 }
 
 .page-shell {
@@ -260,16 +262,21 @@
   width: 1.5rem;
   height: 1rem;
   border: 1px solid #1b1b1b;
-  border-radius: 0.2rem;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .legend-swatch.county {
   background-color: #3182ce;
+  border-radius: 0.2rem; /* Square/rectangle for areas */
 }
 
 .legend-swatch.city {
   background-color: #ed8936;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%; /* Circle for points */
+  border: 2px solid #c05621; /* Match the map marker border */
 }
 
 .selected-section {
@@ -402,6 +409,38 @@
   display: flex;
   justify-content: center;
   padding: 1.5rem 0;
+}
+
+/* Empty State */
+.empty-state {
+  background: #f9f9f9;
+  border-style: dashed;
+}
+
+.empty-state-message {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.empty-state-message p {
+  margin: 0;
+  color: #71767a;
+  font-size: 1rem;
+}
+
+/* Accessibility: Focus States */
+button:focus-visible,
+.usa-button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #2491ff;
+  outline-offset: 2px;
+}
+
+.clear-button:focus-visible,
+.remove-button:focus-visible {
+  outline: 2px solid #2491ff;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .modal-body {

@@ -131,8 +131,6 @@ export function loadDashboardData(): DashboardRecord[] {
   console.log('📊 STEP 1: LOADING DATA FROM CSV')
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
   console.log('Total rows loaded from CSV:', snapshotData.length)
-  console.log('CSV headers:', Object.keys(snapshotData[0] ?? {}))
-  console.log('Sample row:', snapshotData[0])
 
   snapshotData.forEach((row) => {
     const normalized = normalizeRow(row as CsvRowRaw)

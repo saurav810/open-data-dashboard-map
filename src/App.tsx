@@ -12,14 +12,13 @@ import {
 } from '@trussworks/react-uswds'
 import type { ModalRef } from '@trussworks/react-uswds'
 import './App.css'
-import { loadDashboardData, getSnapshotMeta, type DashboardRecord } from './dataLoader'
+import { loadDashboardData, type DashboardRecord } from './dataLoader'
 import { USMap, type Region } from './Map'
 
 type GovernmentTypeFilter = '' | 'City' | 'County' | 'Other Public Agency'
 
 function App() {
   const data = useMemo(() => loadDashboardData(), [])
-  const snapshotMeta = useMemo(() => getSnapshotMeta(), [])
 
   // Region navigation
   const [activeRegion, setActiveRegion] = useState<Region>('lower48')
@@ -181,32 +180,24 @@ function App() {
   const hasPendingChanges = pendingGovType !== appliedGovType || 
     JSON.stringify(Array.from(pendingPopSizes).sort()) !== JSON.stringify(Array.from(appliedPopSizes).sort())
 
-  const lastUpdatedLabel = useMemo(() => {
-    try {
-      const date = new Date(snapshotMeta.generatedAt)
-      return date.toLocaleString()
-    } catch {
-      return '—'
-    }
-  }, [snapshotMeta])
+  // Check for embed mode
+  const isEmbedded = new URLSearchParams(window.location.search).get('embed') === '1'
 
   return (
     <div className="app-container">
       <div className="page-shell">
-        <div className="page-header-wrapper">
-          <header className="page-header">
-            <div>
-              <p className="eyebrow">Live dashboard map</p>
-              <h1>Jurisdiction Dashboard Coverage</h1>
-              <p className="usa-intro">
-                Click jurisdictions on the map to view open data portals. Use filters to narrow results.
-              </p>
-            </div>
-            <div className="header-actions">
-              <p className="last-updated">Last updated: {lastUpdatedLabel}</p>
-            </div>
-          </header>
-        </div>
+        {!isEmbedded && (
+          <div className="page-header-wrapper">
+            <header className="page-header">
+              <div>
+                <h1>Open Data Portals by Jurisdiction</h1>
+                <p className="usa-intro">
+                  Explore city and county open data portals across the United States. Open data portals are websites where local governments publish public datasets. Use the map and filters to narrow results.
+                </p>
+              </div>
+            </header>
+          </div>
+        )}
 
         <div className="map-layout">
           <aside className="filters-sidebar" aria-label="Filters">
@@ -304,13 +295,17 @@ function App() {
                   type="button"
                   onClick={() => setActiveRegion('lower48')}
                   outline={activeRegion !== 'lower48'}
+                  aria-label="Zoom to Contiguous United States"
+                  aria-pressed={activeRegion === 'lower48'}
                 >
-                  Lower 48
+                  Contiguous U.S.
                 </Button>
                 <Button
                   type="button"
                   onClick={() => setActiveRegion('alaska')}
                   outline={activeRegion !== 'alaska'}
+                  aria-label="Zoom to Alaska"
+                  aria-pressed={activeRegion === 'alaska'}
                 >
                   Alaska
                 </Button>
@@ -318,8 +313,10 @@ function App() {
                   type="button"
                   onClick={() => setActiveRegion('hawaii')}
                   outline={activeRegion !== 'hawaii'}
+                  aria-label="Zoom to Hawaiʻi"
+                  aria-pressed={activeRegion === 'hawaii'}
                 >
-                  Hawaii
+                  Hawaiʻi
                 </Button>
               </div>
             </div>
@@ -335,12 +332,14 @@ function App() {
                   <div className="map-container">
                     <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} activeRegion={activeRegion} />
                   </div>
-                  <div className="map-legend">
+                  <div className="map-legend" role="region" aria-label="Map legend">
                     <span className="legend-item">
-                      <span className="legend-swatch county" /> Counties ({Array.from(hasDataIds).filter(id => id.length === 5).length})
+                      <span className="legend-swatch county" aria-hidden="true" /> 
+                      <span>Counties — shown as shaded areas ({Array.from(hasDataIds).filter(id => id.length === 5).length})</span>
                     </span>
                     <span className="legend-item">
-                      <span className="legend-swatch city" /> Cities ({Array.from(hasDataIds).filter(id => id.length === 7).length})
+                      <span className="legend-swatch city" aria-hidden="true" /> 
+                      <span>Cities — shown as points ({Array.from(hasDataIds).filter(id => id.length === 7).length})</span>
                     </span>
                   </div>
                 </>
@@ -349,11 +348,25 @@ function App() {
           </div>
         </div>
 
+        {selectedJurisdictions.size === 0 && (
+          <section className="selected-section empty-state" aria-live="polite">
+            <div className="empty-state-message">
+              <p>Select a city or county on the map to view details.</p>
+            </div>
+          </section>
+        )}
+
         {selectedJurisdictions.size > 0 && (
           <section className="selected-section">
             <div className="selected-header">
               <h2>Selected Jurisdictions ({selectedJurisdictions.size})</h2>
-              <Button type="button" unstyled onClick={clearSelectedQueries} className="clear-button">
+              <Button 
+                type="button" 
+                unstyled 
+                onClick={clearSelectedQueries} 
+                className="clear-button"
+                aria-label={`Clear all ${selectedJurisdictions.size} selected jurisdictions`}
+              >
                 Clear selections
               </Button>
             </div>
@@ -385,6 +398,7 @@ function App() {
                           unstyled
                           onClick={() => removeSelectedQuery(row.jurisdictionId)}
                           className="remove-button"
+                          aria-label={`Remove ${row.jurisdiction} from selection`}
                         >
                           Remove
                         </Button>
@@ -409,7 +423,6 @@ function App() {
             <ul className="detail-list">
               {selectedFeatureRows.map((row) => (
                 <li key={`${row.jurisdiction}-${row.url}`} className="detail-card">
-                  <p className="detail-title">{row.jurisdiction}</p>
                   <p className="detail-meta">Government Type: {row.displayGovernmentType}</p>
                   <p className="detail-meta">Population Size: {row.populationSize}</p>
                   {row.notes && (
