@@ -8,6 +8,8 @@ export interface CsvRowRaw {
   'Population Size'?: string
   'Government Type'?: string
   Notes?: string
+  Latitude?: string | number
+  Longitude?: string | number
 }
 
 export interface DashboardRecord {
@@ -20,6 +22,8 @@ export interface DashboardRecord {
   isUnified: boolean
   displayGovernmentType: string
   notes: string
+  latitude?: number
+  longitude?: number
 }
 
 export interface SnapshotMeta {
@@ -87,6 +91,24 @@ function normalizeRow(raw: CsvRowRaw): DashboardRecord | null {
     displayGovernmentType = 'City + County'
   }
 
+  // Parse latitude and longitude (if present)
+  let latitude: number | undefined
+  let longitude: number | undefined
+  
+  if (raw.Latitude !== undefined && raw.Latitude !== null && raw.Latitude !== '') {
+    const lat = Number(raw.Latitude)
+    if (Number.isFinite(lat)) {
+      latitude = lat
+    }
+  }
+  
+  if (raw.Longitude !== undefined && raw.Longitude !== null && raw.Longitude !== '') {
+    const lon = Number(raw.Longitude)
+    if (Number.isFinite(lon)) {
+      longitude = lon
+    }
+  }
+
   return {
     jurisdiction,
     jurisdictionId,
@@ -97,11 +119,20 @@ function normalizeRow(raw: CsvRowRaw): DashboardRecord | null {
     isUnified,
     displayGovernmentType,
     notes,
+    latitude,
+    longitude,
   }
 }
 
 export function loadDashboardData(): DashboardRecord[] {
   const records: DashboardRecord[] = []
+
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  console.log('📊 STEP 1: LOADING DATA FROM CSV')
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  console.log('Total rows loaded from CSV:', snapshotData.length)
+  console.log('CSV headers:', Object.keys(snapshotData[0] ?? {}))
+  console.log('Sample row:', snapshotData[0])
 
   snapshotData.forEach((row) => {
     const normalized = normalizeRow(row as CsvRowRaw)
@@ -110,27 +141,65 @@ export function loadDashboardData(): DashboardRecord[] {
     }
   })
 
-  // Debug: Show what IDs we have
-  console.log('📊 Total records loaded:', records.length)
-  const denverRecord = records.find(r => r.jurisdiction.toLowerCase().includes('denver'))
-  if (denverRecord) {
-    console.log('✅ Denver record:', {
-      name: denverRecord.jurisdiction,
-      id: denverRecord.jurisdictionId,
-      idLength: denverRecord.jurisdictionId.length,
-      govType: denverRecord.governmentTypeRaw
-    })
-  } else {
-    console.log('❌ Denver NOT found in records')
-  }
+  console.log('✅ Total records after normalization:', records.length)
   
-  // Show some sample IDs with leading zeros
-  const leadingZeroIds = records.filter(r => r.jurisdictionId.startsWith('0')).slice(0, 5)
-  console.log('Sample leading-zero IDs:', leadingZeroIds.map(r => ({
-    name: r.jurisdiction,
-    id: r.jurisdictionId,
-    len: r.jurisdictionId.length
-  })))
+  // Count by government type
+  const cityRows = records.filter(r => r.governmentTypes.includes('City'))
+  const countyRows = records.filter(r => r.governmentTypes.includes('County'))
+  const cityOnlyRows = records.filter(r => r.governmentTypes.includes('City') && !r.governmentTypes.includes('County'))
+  const countyOnlyRows = records.filter(r => r.governmentTypes.includes('County') && !r.governmentTypes.includes('City'))
+  const unifiedRows = records.filter(r => r.isUnified)
+  
+  console.log('Count of city rows (includes unified):', cityRows.length)
+  console.log('Count of county rows (includes unified):', countyRows.length)
+  console.log('Count of city-only rows:', cityOnlyRows.length)
+  console.log('Count of county-only rows:', countyOnlyRows.length)
+  console.log('Count of unified city-county rows:', unifiedRows.length)
+  
+  // Count by ID length (5-digit = county, 7-digit = city)
+  const fiveDigitIds = records.filter(r => r.jurisdictionId.length === 5)
+  const sevenDigitIds = records.filter(r => r.jurisdictionId.length === 7)
+  
+  console.log('Count with 5-digit IDs (county format):', fiveDigitIds.length)
+  console.log('Count with 7-digit IDs (city format):', sevenDigitIds.length)
+  
+  // Check for specific expected cities
+  console.log('\n🔍 CHECKING FOR EXPECTED JURISDICTIONS:')
+  const dallasCity = records.find(r => r.jurisdiction.toLowerCase().includes('dallas') && r.governmentTypes.includes('City'))
+  const dallasCounty = records.find(r => r.jurisdiction.toLowerCase().includes('dallas') && r.governmentTypes.includes('County'))
+  const denver = records.find(r => r.jurisdiction.toLowerCase().includes('denver'))
+  const laCity = records.find(r => r.jurisdiction.toLowerCase() === 'los angeles' && r.governmentTypes.includes('City'))
+  const laCounty = records.find(r => r.jurisdiction.toLowerCase().includes('los angeles') && r.governmentTypes.includes('County'))
+  
+  console.log(dallasCity ? '✅ Dallas city found:' : '❌ Dallas city NOT found', dallasCity ? `${dallasCity.jurisdictionId} (${dallasCity.governmentTypeRaw})` : '')
+  console.log(dallasCounty ? '✅ Dallas County found:' : '❌ Dallas County NOT found', dallasCounty ? `${dallasCounty.jurisdictionId} (${dallasCounty.governmentTypeRaw})` : '')
+  console.log(denver ? '✅ Denver found:' : '❌ Denver NOT found', denver ? `${denver.jurisdictionId} (${denver.governmentTypeRaw})` : '')
+  console.log(laCity ? '✅ Los Angeles city found:' : '❌ Los Angeles city NOT found', laCity ? `${laCity.jurisdictionId} (${laCity.governmentTypeRaw})` : '')
+  console.log(laCounty ? '✅ Los Angeles County found:' : '❌ Los Angeles County NOT found', laCounty ? `${laCounty.jurisdictionId} (${laCounty.governmentTypeRaw})` : '')
+  
+  // STEP 4: Collision detector
+  console.log('\n🔍 COLLISION DETECTOR:')
+  const nameMap = new Map<string, DashboardRecord[]>()
+  records.forEach(record => {
+    const name = record.jurisdiction.toLowerCase()
+    if (!nameMap.has(name)) {
+      nameMap.set(name, [])
+    }
+    nameMap.get(name)!.push(record)
+  })
+  
+  const collisions = Array.from(nameMap.entries())
+    .filter(([_, records]) => records.length > 1)
+    .sort((a, b) => b[1].length - a[1].length)
+  
+  console.log(`Found ${collisions.length} jurisdiction names with multiple records:`)
+  collisions.slice(0, 10).forEach(([name, recs]) => {
+    const types = recs.map(r => r.displayGovernmentType).join(', ')
+    const ids = recs.map(r => r.jurisdictionId).join(', ')
+    console.log(`  "${name}" has ${recs.length} records (${types}) [IDs: ${ids}]`)
+  })
+  
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 
   return records
 }

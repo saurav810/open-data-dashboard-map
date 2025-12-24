@@ -57,7 +57,13 @@ function App() {
   }, [data])
 
   const filteredRows = useMemo(() => {
-    return data.filter((row) => {
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('📊 STEP 2: FILTERING DATA')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('Total rows before filtering:', data.length)
+    console.log('Applied filters:', { appliedGovType, appliedPopSizes: Array.from(appliedPopSizes) })
+    
+    const filtered = data.filter((row) => {
       if (appliedGovType) {
         if (appliedGovType === 'City' && !row.governmentTypes.includes('City')) return false
         if (appliedGovType === 'County' && !row.governmentTypes.includes('County')) return false
@@ -73,11 +79,52 @@ function App() {
 
       return true
     })
+    
+    console.log('✅ Total rows after filtering:', filtered.length)
+    const filteredCities = filtered.filter(r => r.governmentTypes.includes('City'))
+    const filteredCounties = filtered.filter(r => r.governmentTypes.includes('County'))
+    console.log('Filtered city rows:', filteredCities.length)
+    console.log('Filtered county rows:', filteredCounties.length)
+    
+    // Check for specific jurisdictions after filtering
+    const dallasCity = filtered.find(r => r.jurisdiction.toLowerCase().includes('dallas') && r.governmentTypes.includes('City'))
+    const denver = filtered.find(r => r.jurisdiction.toLowerCase().includes('denver'))
+    const laCity = filtered.find(r => r.jurisdiction.toLowerCase() === 'los angeles' && r.governmentTypes.includes('City'))
+    
+    console.log(dallasCity ? '✅ Dallas city still present after filter' : '❌ Dallas city filtered out')
+    console.log(denver ? '✅ Denver still present after filter' : '❌ Denver filtered out')
+    console.log(laCity ? '✅ Los Angeles city still present after filter' : '❌ Los Angeles city filtered out')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+    
+    return filtered
   }, [data, appliedGovType, appliedPopSizes])
 
   const hasDataIds = useMemo(() => {
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('📊 STEP 3: CREATING ID SET (hasDataIds)')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    
     const ids = new Set(filteredRows.map((row) => row.jurisdictionId))
-    console.log('hasDataIds computed:', ids.size, 'IDs')
+    console.log('Total unique IDs in hasDataIds:', ids.size)
+    
+    const fiveDigit = Array.from(ids).filter(id => id.length === 5)
+    const sevenDigit = Array.from(ids).filter(id => id.length === 7)
+    console.log('5-digit IDs (counties):', fiveDigit.length)
+    console.log('7-digit IDs (cities):', sevenDigit.length)
+    
+    // Check for duplicates in source data
+    const idCounts = new Map<string, number>()
+    filteredRows.forEach(row => {
+      idCounts.set(row.jurisdictionId, (idCounts.get(row.jurisdictionId) || 0) + 1)
+    })
+    const duplicates = Array.from(idCounts.entries()).filter(([_, count]) => count > 1)
+    if (duplicates.length > 0) {
+      console.warn('⚠️  Duplicate IDs found:', duplicates)
+    }
+    
+    console.log('Sample IDs:', Array.from(ids).slice(0, 10))
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+    
     return ids
   }, [filteredRows])
 

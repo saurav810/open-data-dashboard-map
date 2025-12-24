@@ -70,12 +70,11 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
       try {
         setLoading(true)
         
-        console.log('🗺️ Map received hasDataIds:', hasDataIds.size, 'IDs')
-        console.log('Sample IDs from dataset:', Array.from(hasDataIds).slice(0, 10))
-        
-        // Check for Denver specifically
-        const denverIds = Array.from(hasDataIds).filter(id => id.includes('082'))
-        console.log('Denver-related IDs in dataset:', denverIds)
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        console.log('📊 STEP 4: MAP RENDERING')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        console.log('Map received hasDataIds:', hasDataIds.size, 'IDs')
+        console.log('Map received allData records:', allData.length)
         
         // Load county GeoJSON
         const response = await fetch(
@@ -99,21 +98,10 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
           const paddedId = String(numericId).padStart(5, '0')
           const matchedId = idMatchMap.get(paddedId)
           
-          // Debug Denver County specifically
-          if (paddedId.startsWith('082')) {
-            console.log('Denver County GeoJSON feature:', {
-              id: numericId,
-              paddedId,
-              name: feature.properties?.name,
-              hasMatch: hasDataIds.has(matchedId || '')
-            })
-          }
-          
           // Check for direct 5-digit county match
           if (matchedId && hasDataIds.has(matchedId)) {
             if (!feature.properties) feature.properties = {}
             feature.properties.CSV_ID = matchedId
-            console.log('County match:', paddedId, feature.properties.name)
             countyMatches++
             return true
           }
@@ -124,7 +112,6 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
           if (hasDataIds.has(cityStyleId)) {
             if (!feature.properties) feature.properties = {}
             feature.properties.CSV_ID = cityStyleId
-            console.log('Unified city-county match:', paddedId, '->', cityStyleId, feature.properties.name)
             countyMatches++
             return true
           }
@@ -132,61 +119,76 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
           return false
         })
         
-        console.log(`Found ${countyMatches} counties with data`)
+        console.log('✅ County polygons to render:', countyMatches)
         
         setCountiesData({
           type: 'FeatureCollection',
           features: filteredFeatures,
         })
 
-        // Create city markers from 7-digit IDs
+        // Create city markers using Latitude/Longitude from the data
+        // Only render cities (Government Type includes "City")
         const cityFeatures: Array<Feature<any>> = []
-        const cityIds = Array.from(hasDataIds).filter(id => id.length === 7)
-        console.log(`Found ${cityIds.length} cities with 7-digit IDs`)
+        let citiesWithoutCoords = 0
         
-        // For now, we'll place city markers at the centroid of their parent county
-        // This is a simplified approach - ideally we'd load actual city boundaries
-        cityIds.forEach(cityId => {
-          const stateFips = cityId.substring(0, 2)
-          const stateCountyFips = cityId.substring(0, 5)
+        console.log('Creating city markers from data with coordinates...')
+        
+        // Filter to only city records (including unified city-county)
+        const cityRecords = allData.filter(record => record.governmentTypes.includes('City'))
+        console.log(`Found ${cityRecords.length} city records (including unified)`)
+        
+        cityRecords.forEach(record => {
+          const lat = Number(record.latitude)
+          const lon = Number(record.longitude)
           
-          // Try to find parent county
-          let parentCounty = geojson.features.find(f => String(f.id).padStart(5, '0') === stateCountyFips)
-          
-          // If no exact county match, find any county in the same state
-          if (!parentCounty) {
-            parentCounty = geojson.features.find(f => String(f.id).padStart(5, '0').startsWith(stateFips))
-          }
-          
-          if (parentCounty && parentCounty.geometry.type === 'Polygon') {
-            // Calculate centroid of county polygon
-            const coords = parentCounty.geometry.coordinates[0] as number[][]
-            const lngs = coords.map(c => c[0])
-            const lats = coords.map(c => c[1])
-            const centerLng = lngs.reduce((a, b) => a + b, 0) / lngs.length
-            const centerLat = lats.reduce((a, b) => a + b, 0) / lats.length
-            
-            const cityRecord = allData.find(d => d.jurisdictionId === cityId)
-            
+          // Only render if we have valid coordinates
+          if (Number.isFinite(lat) && Number.isFinite(lon)) {
             cityFeatures.push({
               type: 'Feature',
-              id: cityId,
+              id: record.jurisdictionId,
               properties: {
-                name: cityRecord?.jurisdiction || 'City',
-                CSV_ID: cityId,
+                name: record.jurisdiction,
+                CSV_ID: record.jurisdictionId,
                 isCity: true,
               },
               geometry: {
                 type: 'Point',
-                coordinates: [centerLng, centerLat],
+                coordinates: [lon, lat], // GeoJSON uses [longitude, latitude]
               },
             })
           } else {
-            console.log(`No parent county found for city ${cityId}, state: ${stateFips}`)
+            citiesWithoutCoords++
+            console.warn(`⚠️  City missing coordinates: ${record.jurisdiction} (ID: ${record.jurisdictionId})`)
           }
         })
         
-        console.log(`Created ${cityFeatures.length} city markers`)
+        console.log(`✅ City markers created with coordinates: ${cityFeatures.length}`)
+        if (citiesWithoutCoords > 0) {
+          console.warn(`⚠️  ${citiesWithoutCoords} cities skipped (missing coordinates)`)
+        }
+        
+        // Check for specific cities in the render list
+        const dallasCity = cityFeatures.find(f => f.properties?.name?.toLowerCase().includes('dallas') && !f.properties?.name?.toLowerCase().includes('county'))
+        const denver = cityFeatures.find(f => f.properties?.name?.toLowerCase().includes('denver'))
+        const laCity = cityFeatures.find(f => f.properties?.name?.toLowerCase().includes('los angeles'))
+        
+        console.log(dallasCity ? '✅ Dallas city marker created' : '❌ Dallas city marker NOT created')
+        console.log(denver ? '✅ Denver marker created' : '❌ Denver marker NOT created')
+        console.log(laCity ? '✅ Los Angeles city marker created' : '❌ Los Angeles city marker NOT created')
+        
+        console.log('\n📊 RENDERING SUMMARY:')
+        console.log(`  County polygons in hasDataIds: ${Array.from(hasDataIds).filter(id => id.length === 5).length}`)
+        console.log(`  County polygons to render: ${countyMatches}`)
+        console.log(`  City records in dataset: ${cityRecords.length}`)
+        console.log(`  City markers created: ${cityFeatures.length}`)
+        console.log(`  Cities dropped: ${cityRecords.length - cityFeatures.length}`)
+        
+        if (cityRecords.length !== cityFeatures.length) {
+          console.warn(`⚠️  ${cityRecords.length - cityFeatures.length} cities were dropped (missing coordinates)!`)
+        }
+        
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+        
         setCitiesData(cityFeatures)
         
       } catch (error) {
