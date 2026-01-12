@@ -8,6 +8,18 @@ import { MAP_COLORS } from './mapColors'
 
 export type Region = 'lower48' | 'alaska' | 'hawaii'
 
+// Bounds for contiguous U.S. initial view
+const CONTIGUOUS_US_BOUNDS: [[number, number], [number, number]] = [
+  [24.396308, -124.848974], // SW
+  [49.384358, -66.885444],  // NE
+]
+
+// Larger bounds that include Alaska and Hawaii to prevent panning off
+const US_MAX_BOUNDS: [[number, number], [number, number]] = [
+  [15, -180],    // SW (includes Hawaii and Alaska)
+  [72, -60]      // NE
+]
+
 interface RegionConfig {
   center: [number, number]
   zoom: number
@@ -46,6 +58,22 @@ interface USMapProps {
   onFeatureClick: (geoid: string, name: string) => void
   allData: DashboardRecord[]
   activeRegion?: Region
+}
+
+// Component to initialize map view on first load
+function InitView() {
+  const map = useMap()
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize()
+      map.fitBounds(CONTIGUOUS_US_BOUNDS, { padding: [20, 20] })
+    }, 0)
+    
+    return () => clearTimeout(timer)
+  }, [map])
+  
+  return null
 }
 
 function MapViewController({ activeRegion }: { activeRegion: Region }) {
@@ -219,11 +247,12 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
       zoom={initialConfig.zoom}
       minZoom={3}
       maxZoom={10}
-      maxBounds={initialConfig.maxBounds}
+      maxBounds={US_MAX_BOUNDS}
       maxBoundsViscosity={1.0}
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
     >
+      <InitView />
       <MapViewController activeRegion={activeRegion} />
       
       <TileLayer
