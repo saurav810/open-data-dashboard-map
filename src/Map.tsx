@@ -4,6 +4,7 @@ import type { Map as LeafletMap } from 'leaflet'
 import type { FeatureCollection, Feature } from 'geojson'
 import 'leaflet/dist/leaflet.css'
 import type { DashboardRecord } from './dataLoader'
+import { MAP_COLORS } from './mapColors'
 
 export type Region = 'lower48' | 'alaska' | 'hawaii'
 
@@ -235,11 +236,11 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
           key={`counties-${hasDataIds.size}`}
           data={countiesData}
           style={() => ({
-            fillColor: '#3182ce',
+            fillColor: MAP_COLORS.county.fill,
             weight: 1,
             opacity: 1,
-            color: '#2c5282',
-            fillOpacity: 0.5,
+            color: MAP_COLORS.county.stroke,
+            fillOpacity: 0.35,
           })}
           onEachFeature={(feature, layer) => {
             const csvId = feature.properties?.CSV_ID as string
@@ -269,8 +270,8 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
             key={csvId}
             center={[coords[1], coords[0]]}  // [lat, lng]
             radius={6}
-            fillColor="#ed8936"
-            color="#c05621"
+            fillColor={MAP_COLORS.city.fill}
+            color={MAP_COLORS.city.stroke}
             weight={2}
             opacity={1}
             fillOpacity={0.8}

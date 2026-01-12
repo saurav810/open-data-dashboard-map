@@ -288,37 +288,113 @@ function App() {
           </aside>
 
           <div className="map-main">
-            <div className="quick-zoom-controls">
-              <span className="quick-zoom-label">Quick zoom:</span>
-              <div className="quick-zoom-buttons" role="group" aria-label="Map region navigation">
-                <Button
-                  type="button"
-                  onClick={() => setActiveRegion('lower48')}
-                  outline={activeRegion !== 'lower48'}
-                  aria-label="Zoom to Contiguous United States"
-                  aria-pressed={activeRegion === 'lower48'}
-                >
-                  Contiguous U.S.
-                </Button>
-                <Button
-                  type="button"
-                  onClick={() => setActiveRegion('alaska')}
-                  outline={activeRegion !== 'alaska'}
-                  aria-label="Zoom to Alaska"
-                  aria-pressed={activeRegion === 'alaska'}
-                >
-                  Alaska
-                </Button>
-                <Button
-                  type="button"
-                  onClick={() => setActiveRegion('hawaii')}
-                  outline={activeRegion !== 'hawaii'}
-                  aria-label="Zoom to Hawaiʻi"
-                  aria-pressed={activeRegion === 'hawaii'}
-                >
-                  Hawaiʻi
-                </Button>
+            {/* Selected Jurisdictions - moved above map for immediate visibility */}
+            <section className="selected-section-compact">
+              {selectedJurisdictions.size === 0 ? (
+                <div className="selection-placeholder">
+                  <p>Selected jurisdictions will appear here.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="selected-header">
+                    <h2>Selected Jurisdictions ({selectedJurisdictions.size})</h2>
+                    <Button 
+                      type="button" 
+                      unstyled 
+                      onClick={clearSelectedQueries} 
+                      className="clear-button"
+                      aria-label="Clear all selected jurisdictions"
+                    >
+                      Clear all
+                    </Button>
+                  </div>
+                  <div className="table-wrapper">
+                    <Table bordered fullWidth>
+                      <thead>
+                        <tr>
+                          <th scope="col">Jurisdiction</th>
+                          <th scope="col">Government Type</th>
+                          <th scope="col">Population Size</th>
+                          <th scope="col">Dashboard</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedJurisdictionsData.map((row) => (
+                          <tr key={`${row.jurisdiction}-${row.jurisdictionId}`}>
+                            <td>{row.jurisdiction}</td>
+                            <td>{row.displayGovernmentType}</td>
+                            <td>{row.populationSize}</td>
+                            <td>
+                              <a href={row.url} target="_blank" rel="noreferrer">
+                                Open Portal
+                              </a>
+                            </td>
+                            <td>
+                              <Button
+                                type="button"
+                                unstyled
+                                onClick={() => removeSelectedQuery(row.jurisdictionId)}
+                                className="remove-button"
+                                aria-label={`Clear ${row.jurisdiction} from selection`}
+                              >
+                                Clear
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
+                </>
+              )}
+            </section>
+
+            <div className="map-controls">
+              <div className="quick-zoom-controls">
+                <span className="quick-zoom-label">Quick zoom:</span>
+                <div className="quick-zoom-buttons" role="group" aria-label="Map region navigation">
+                  <Button
+                    type="button"
+                    onClick={() => setActiveRegion('lower48')}
+                    outline={activeRegion !== 'lower48'}
+                    aria-label="Zoom to Contiguous United States"
+                    aria-pressed={activeRegion === 'lower48'}
+                  >
+                    Contiguous U.S.
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setActiveRegion('alaska')}
+                    outline={activeRegion !== 'alaska'}
+                    aria-label="Zoom to Alaska"
+                    aria-pressed={activeRegion === 'alaska'}
+                  >
+                    Alaska
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setActiveRegion('hawaii')}
+                    outline={activeRegion !== 'hawaii'}
+                    aria-label="Zoom to Hawaiʻi"
+                    aria-pressed={activeRegion === 'hawaii'}
+                  >
+                    Hawaiʻi
+                  </Button>
+                </div>
               </div>
+              {data.length > 0 && (
+                <div className="map-legend" role="region" aria-label="Map legend">
+                  <span className="legend-item">
+                    <span className="legend-swatch county" aria-hidden="true" /> 
+                    <span>Counties — shown as shaded areas ({Array.from(hasDataIds).filter(id => id.length === 5).length})</span>
+                  </span>
+                  <span className="legend-item">
+                    <span className="legend-swatch city" aria-hidden="true" /> 
+                    <span>Cities — shown as points ({Array.from(hasDataIds).filter(id => id.length === 7).length})</span>
+                  </span>
+                </div>
+              )}
             </div>
             <section className="map-section">
               {data.length === 0 ? (
@@ -328,88 +404,13 @@ function App() {
                   </div>
                 </div>
               ) : (
-                <>
-                  <div className="map-container">
-                    <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} activeRegion={activeRegion} />
-                  </div>
-                  <div className="map-legend" role="region" aria-label="Map legend">
-                    <span className="legend-item">
-                      <span className="legend-swatch county" aria-hidden="true" /> 
-                      <span>Counties — shown as shaded areas ({Array.from(hasDataIds).filter(id => id.length === 5).length})</span>
-                    </span>
-                    <span className="legend-item">
-                      <span className="legend-swatch city" aria-hidden="true" /> 
-                      <span>Cities — shown as points ({Array.from(hasDataIds).filter(id => id.length === 7).length})</span>
-                    </span>
-                  </div>
-                </>
+                <div className="map-container">
+                  <USMap hasDataIds={hasDataIds} onFeatureClick={handleFeatureClick} allData={filteredRows} activeRegion={activeRegion} />
+                </div>
               )}
             </section>
           </div>
         </div>
-
-        {selectedJurisdictions.size === 0 && (
-          <section className="selected-section empty-state" aria-live="polite">
-            <div className="empty-state-message">
-              <p>Select a city or county on the map to view details.</p>
-            </div>
-          </section>
-        )}
-
-        {selectedJurisdictions.size > 0 && (
-          <section className="selected-section">
-            <div className="selected-header">
-              <h2>Selected Jurisdictions ({selectedJurisdictions.size})</h2>
-              <Button 
-                type="button" 
-                unstyled 
-                onClick={clearSelectedQueries} 
-                className="clear-button"
-                aria-label={`Clear all ${selectedJurisdictions.size} selected jurisdictions`}
-              >
-                Clear selections
-              </Button>
-            </div>
-            <div className="table-wrapper">
-              <Table bordered fullWidth>
-                <thead>
-                  <tr>
-                    <th scope="col">Jurisdiction</th>
-                    <th scope="col">Government Type</th>
-                    <th scope="col">Population Size</th>
-                    <th scope="col">Dashboard</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedJurisdictionsData.map((row) => (
-                    <tr key={`${row.jurisdiction}-${row.jurisdictionId}`}>
-                      <td>{row.jurisdiction}</td>
-                      <td>{row.displayGovernmentType}</td>
-                      <td>{row.populationSize}</td>
-                      <td>
-                        <a href={row.url} target="_blank" rel="noreferrer">
-                          Open Portal
-                        </a>
-                      </td>
-                      <td>
-                        <Button
-                          type="button"
-                          unstyled
-                          onClick={() => removeSelectedQuery(row.jurisdictionId)}
-                          className="remove-button"
-                          aria-label={`Remove ${row.jurisdiction} from selection`}
-                        >
-                          Remove
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </section>
-        )}
       </div>
 
       <Modal id="details-modal" ref={modalRef} aria-labelledby="details-heading" aria-describedby="details-body">
@@ -431,20 +432,28 @@ function App() {
                       <p className="detail-notes">{row.notes}</p>
                     </div>
                   )}
-                  <p>
-                    <a href={row.url} target="_blank" rel="noreferrer" className="portal-link">
+                  <div className="detail-actions">
+                    <Button 
+                      type="button" 
+                      onClick={() => window.open(row.url, '_blank', 'noreferrer')}
+                      className="portal-button-primary"
+                    >
                       Open Data Portal →
-                    </a>
-                  </p>
+                    </Button>
+                  </div>
                 </li>
               ))}
             </ul>
           )}
         </div>
         <ModalFooter>
-          <Button type="button" secondary onClick={() => modalRef.current?.toggleModal(undefined, false)}>
+          <button 
+            type="button" 
+            onClick={() => modalRef.current?.toggleModal(undefined, false)}
+            className="modal-close-link"
+          >
             Close
-          </Button>
+          </button>
         </ModalFooter>
       </Modal>
     </div>
