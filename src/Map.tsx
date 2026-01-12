@@ -8,11 +8,9 @@ import { MAP_COLORS } from './mapColors'
 
 export type Region = 'lower48' | 'alaska' | 'hawaii'
 
-// Bounds for contiguous U.S. initial view
-const CONTIGUOUS_US_BOUNDS: [[number, number], [number, number]] = [
-  [24.396308, -124.848974], // SW
-  [49.384358, -66.885444],  // NE
-]
+// Default U.S. center and zoom for consistent initial view
+const DEFAULT_US_CENTER: [number, number] = [39.8, -98.6]
+const DEFAULT_US_ZOOM = 4
 
 // Larger bounds that include Alaska and Hawaii to prevent panning off
 const US_MAX_BOUNDS: [[number, number], [number, number]] = [
@@ -60,17 +58,21 @@ interface USMapProps {
   activeRegion?: Region
 }
 
-// Component to initialize map view on first load
-function InitView() {
+// Component to initialize map view on first load (iframe-safe)
+function InitMapView() {
   const map = useMap()
+  const didRun = useRef(false)
   
   useEffect(() => {
-    const timer = setTimeout(() => {
-      map.invalidateSize()
-      map.fitBounds(CONTIGUOUS_US_BOUNDS, { padding: [20, 20] })
-    }, 0)
+    if (didRun.current) return
+    didRun.current = true
     
-    return () => clearTimeout(timer)
+    const timer = window.setTimeout(() => {
+      map.invalidateSize()
+      map.setView(DEFAULT_US_CENTER, DEFAULT_US_ZOOM, { animate: false })
+    }, 150)
+    
+    return () => window.clearTimeout(timer)
   }, [map])
   
   return null
@@ -238,13 +240,11 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
     </div>
   }
 
-  const initialConfig = REGION_PRESETS[activeRegion]
-
   return (
     <MapContainer
       ref={mapRef}
-      center={initialConfig.center}
-      zoom={initialConfig.zoom}
+      center={DEFAULT_US_CENTER}
+      zoom={DEFAULT_US_ZOOM}
       minZoom={3}
       maxZoom={10}
       maxBounds={US_MAX_BOUNDS}
@@ -252,7 +252,7 @@ export function USMap({ hasDataIds, onFeatureClick, allData, activeRegion = 'low
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
     >
-      <InitView />
+      <InitMapView />
       <MapViewController activeRegion={activeRegion} />
       
       <TileLayer
